@@ -1,0 +1,47 @@
+#include <iostream>
+#include <clocale>
+#include <windows.h>
+
+using namespace std;
+
+int main() {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	setlocale(0, "");
+	char text[255];
+	cout << "Введите слова через пробел: ";
+	cin.getline(text, 255, '\n');
+	
+
+	int index_begin[255] = {0};
+	int counter = 0;
+	int min = 255;
+
+	for (int i = 0; i < 254; i++) {
+		counter++;
+		if (text[i] == 32 || text[i] == 0) {
+			counter--;
+			if (counter < min) {
+
+				min = counter;
+ 				fill_n(index_begin, 255, 0);
+				index_begin[i - min] = min;
+			}
+			if (counter == min) {
+				index_begin[i - min] = min;
+			}
+			counter = 0;
+		}
+	}
+
+	for (int i = 0; i < 255; i++) {
+		if (index_begin[i] != 0) {
+			for (int j = i; j < i + min; j++) {
+				cout << text[j];
+			}
+			cout << '\t';
+		}
+	}
+
+	return 0;
+}
